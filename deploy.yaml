@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: myapi
+  name: myapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapi
+  template:
+    metadata:
+      labels:
+        app: myapi
+    spec:
+      containers:
+      - image: tejap2890.azurecr.io/myapi
+        name: myapi
+        ports:
+        - containerPort: 5000
+          name: myapi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapi
+spec:
+  type: LoadBalancer
+  selector:
+    app: myapi # Replace with app label selector
+  ports:
+    - protocol: TCP
+      port: 80  # Port exposed by the service
+      targetPort: 5000  # Port on the pods to forward traffic to
